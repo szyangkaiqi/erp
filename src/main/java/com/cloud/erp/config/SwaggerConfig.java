@@ -1,4 +1,4 @@
-package com.cloud.erp.erp.config;
+package com.cloud.erp.config;
 
 import java.util.List;
 

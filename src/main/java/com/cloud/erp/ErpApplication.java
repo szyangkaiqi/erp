@@ -1,4 +1,4 @@
-package com.cloud.erp.erp;
+package com.cloud.erp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
