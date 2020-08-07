@@ -1,6 +1,7 @@
 package com.cloud.erp.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -14,7 +15,7 @@ import com.cloud.erp.service.TUserwService;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class, DataAccessException.class})
-public class TUserwServiceImpl implements TUserwService {
+public class TUserwServiceImpl extends AbstractBaseService implements TUserwService {
 
     @Autowired
     private TUserwRepository tUserwRepository;
@@ -39,7 +40,7 @@ public class TUserwServiceImpl implements TUserwService {
      * @Date: 2020-08-07
      */
     @Override
-    public TUserwDO findByName(String fName) throws Exception {
-        return tUserwRepository.findByName(fName);
+    public Optional<TUserwDO> findByName(String fName) throws Exception {
+        return tUserwRepository.findByName(fName).stream().findAny();
     }
 }

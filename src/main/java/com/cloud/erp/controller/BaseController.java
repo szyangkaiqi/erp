@@ -22,6 +22,7 @@ public class BaseController {
      */
     @ExceptionHandler({RuntimeException.class, Exception.class})
     public Result exp(HttpServletRequest request, Exception ex) {
+        logger.error(ex.getMessage(), ex);
         return Result.makeFail(ex.getMessage(), ex);
     }
 

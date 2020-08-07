@@ -8,7 +8,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.cloud.erp.config.WebMvcConfig;
 
-@SpringBootApplication(scanBasePackages = {"com.cloud.erp"})
+import springfox.documentation.oas.annotations.EnableOpenApi;
+
+/**
+ * @author YANGKAIQI1
+ */
+@SpringBootApplication
+@EnableOpenApi
 @EnableTransactionManagement
 public class ErpApplication {
 

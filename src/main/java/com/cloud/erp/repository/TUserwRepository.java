@@ -1,5 +1,7 @@
 package com.cloud.erp.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.cloud.erp.pojo.entity.TUserwDO;
@@ -13,5 +15,5 @@ public interface TUserwRepository extends JpaRepository<TUserwDO, Integer> {
      * @Author: YANGKAIQI1
      * @Date: 2020-08-07
      */
-    TUserwDO findByName(String fName) throws Exception;
+    List<TUserwDO> findByName(String fName) throws Exception;
 }
