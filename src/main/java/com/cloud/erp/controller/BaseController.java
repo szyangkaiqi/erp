@@ -2,17 +2,16 @@ package com.cloud.erp.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cloud.erp.pojo.vo.Result;
 
-@RestController
-public class BaseController {
+import lombok.extern.slf4j.Slf4j;
 
-    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+@RestController
+@Slf4j
+public class BaseController {
 
     /**
      * 统一异常处理类
@@ -22,7 +21,7 @@ public class BaseController {
      */
     @ExceptionHandler({RuntimeException.class, Exception.class})
     public Result exp(HttpServletRequest request, Exception ex) {
-        logger.error(ex.getMessage(), ex);
+        log.error(ex.getMessage(), ex);
         return Result.makeFail(ex.getMessage(), ex);
     }
 
