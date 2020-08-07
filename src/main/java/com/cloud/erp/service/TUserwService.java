@@ -21,5 +21,5 @@ public interface TUserwService {
      * @Author: YANGKAIQI1
      * @Date: 2020-08-07
      */
-    TUserwDO findByFName(String fName) throws Exception;
+    TUserwDO findByName(String fName) throws Exception;
 }

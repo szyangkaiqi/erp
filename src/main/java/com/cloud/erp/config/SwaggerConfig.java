@@ -25,7 +25,7 @@ public class SwaggerConfig {
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2).globalRequestParameters(createGlobalParams()).select()
-            .apis(RequestHandlerSelectors.basePackage("com.cloud.erp.erp")).paths(PathSelectors.any()).build()
+            .apis(RequestHandlerSelectors.basePackage("com.cloud.erp")).paths(PathSelectors.any()).build()
             .apiInfo(new ApiInfoBuilder().title("云ERP").description("©2020 Copyright. ")
                 .contact(new Contact("admin", "http://www.erp.cloud.com.cn", "admin@cloud.erp.hk")).license("云erp")
                 .build())

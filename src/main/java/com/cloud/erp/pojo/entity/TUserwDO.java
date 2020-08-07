@@ -15,22 +15,22 @@ public class TUserwDO {
 
     @Id
     @Column(name = "FID", nullable = false)
-    private Integer fid;
+    private Integer id;
 
     @Basic
     @Column(name = "FUserID", nullable = true)
-    private Integer fUserId;
+    private Integer userId;
 
     @Basic
     @Column(name = "FName", nullable = true, length = 80)
-    private String fName;
+    private String name;
 
     @Basic
     @Column(name = "FSID", nullable = true, length = 80)
-    private String fsid;
+    private String sid;
 
     @Basic
     @Column(name = "FForbidden", nullable = true)
-    private Integer fForbidden;
+    private Integer forbidden;
 
 }

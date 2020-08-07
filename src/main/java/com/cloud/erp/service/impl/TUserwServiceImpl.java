@@ -39,7 +39,7 @@ public class TUserwServiceImpl implements TUserwService {
      * @Date: 2020-08-07
      */
     @Override
-    public TUserwDO findByFName(String fName) throws Exception {
-        return tUserwRepository.findByFName(fName);
+    public TUserwDO findByName(String fName) throws Exception {
+        return tUserwRepository.findByName(fName);
     }
 }

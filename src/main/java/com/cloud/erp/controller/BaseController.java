@@ -12,7 +12,7 @@ import com.cloud.erp.pojo.vo.Result;
 @RestController
 public class BaseController {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      * 统一异常处理类
@@ -22,7 +22,7 @@ public class BaseController {
      */
     @ExceptionHandler({RuntimeException.class, Exception.class})
     public Result exp(HttpServletRequest request, Exception ex) {
-        return new Result().makeFail(ex.getMessage());
+        return Result.makeFail(ex.getMessage(), ex);
     }
 
 }
