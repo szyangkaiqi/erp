@@ -9,11 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cloud.erp.annotation.HibernateCacheAnnotation;
 import com.cloud.erp.pojo.entity.TUserwDO;
 import com.cloud.erp.repository.TUserwRepository;
 import com.cloud.erp.service.TUserwService;
 
 @Service
+@HibernateCacheAnnotation
 @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class, DataAccessException.class})
 public class TUserwServiceImpl extends AbstractBaseService implements TUserwService {
 
