@@ -12,8 +12,10 @@ import com.cloud.erp.constant.MessageConstant;
 import com.cloud.erp.pojo.dto.UserwDTO;
 import com.cloud.erp.pojo.vo.Result;
 import com.cloud.erp.service.UserwService;
+import com.cloud.erp.utils.JWTTokenUtil;
 import com.cloud.erp.utils.MessageUtils;
 
+import cn.hutool.crypto.SecureUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -35,7 +37,10 @@ public class LoginController extends BaseController {
             return Result.makeFail(MessageUtils.get(MessageConstant.USER_NAME_OR_PASSWORD_ERROR.name()));
         }
 
-        return Result.makeSuccess();
+        String token = JWTTokenUtil.generateToken(user.get().getUserId(), user.get().getName());
+
+        token = token + "#" + SecureUtil.md5(token);
+        return Result.makeSuccess(token);
 
     }
 
