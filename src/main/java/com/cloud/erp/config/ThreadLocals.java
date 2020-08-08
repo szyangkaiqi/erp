@@ -6,6 +6,9 @@ import java.util.function.Function;
 
 import com.google.common.collect.Maps;
 
+/**
+ * @author YANGKAIQI1
+ */
 public class ThreadLocals {
     private static final ThreadLocal<Map<Object, Object>> THREAD_LOCAL = new ThreadLocal<>();
 
