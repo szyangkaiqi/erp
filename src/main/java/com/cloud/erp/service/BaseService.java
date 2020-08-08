@@ -3,7 +3,7 @@ package com.cloud.erp.service;
 /**
  * @author YANGKAIQI1
  */
-public interface BaseService {
+public interface BaseService<U, R> {
     /**
      * @Description: 清楚缓存
      * @Param: []

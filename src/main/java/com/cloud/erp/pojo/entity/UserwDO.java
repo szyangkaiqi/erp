@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "t_userw", schema = "dbo", catalog = "erp")
-public class TUserwDO {
+public class UserwDO {
 
     @Id
     @Column(name = "FID", nullable = false)

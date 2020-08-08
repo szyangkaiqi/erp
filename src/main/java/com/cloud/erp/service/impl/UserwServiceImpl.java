@@ -10,14 +10,15 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cloud.erp.annotation.HibernateCacheAnnotation;
-import com.cloud.erp.pojo.entity.TUserwDO;
+import com.cloud.erp.pojo.dto.UserwDTO;
 import com.cloud.erp.repository.TUserwRepository;
-import com.cloud.erp.service.TUserwService;
+import com.cloud.erp.service.UserwService;
+import com.cloud.erp.utils.BeanUtils;
 
 @Service
 @HibernateCacheAnnotation
 @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class, DataAccessException.class})
-public class TUserwServiceImpl extends AbstractBaseService implements TUserwService {
+public class UserwServiceImpl extends AbstractBaseService implements UserwService {
 
     @Autowired
     private TUserwRepository tUserwRepository;
@@ -30,8 +31,8 @@ public class TUserwServiceImpl extends AbstractBaseService implements TUserwServ
      * @Date: 2020-08-07
      */
     @Override
-    public List<TUserwDO> findAll() throws Exception {
-        return tUserwRepository.findAll();
+    public List<UserwDTO> findAll() throws Exception {
+        return BeanUtils.copy(tUserwRepository.findAll(), UserwDTO.class);
     }
 
     /**
@@ -42,7 +43,7 @@ public class TUserwServiceImpl extends AbstractBaseService implements TUserwServ
      * @Date: 2020-08-07
      */
     @Override
-    public Optional<TUserwDO> findByName(String fName) throws Exception {
-        return tUserwRepository.findByName(fName).stream().findAny();
+    public Optional<UserwDTO> findByName(String fName) throws Exception {
+        return BeanUtils.copy(tUserwRepository.findByName(fName), UserwDTO.class).stream().findAny();
     }
 }

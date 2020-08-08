@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.cloud.erp.pojo.entity.TUserwDO;
+import com.cloud.erp.pojo.entity.UserwDO;
 
-public interface TUserwRepository extends JpaRepository<TUserwDO, Integer> {
+public interface TUserwRepository extends JpaRepository<UserwDO, Integer> {
 
     /**
      * @Description: 根据name查询
@@ -15,5 +15,5 @@ public interface TUserwRepository extends JpaRepository<TUserwDO, Integer> {
      * @Author: YANGKAIQI1
      * @Date: 2020-08-07
      */
-    List<TUserwDO> findByName(String fName) throws Exception;
+    List<UserwDO> findByName(String fName) throws Exception;
 }
