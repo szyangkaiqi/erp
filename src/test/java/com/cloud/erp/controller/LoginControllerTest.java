@@ -74,7 +74,7 @@ public class LoginControllerTest {
 
     }
 
-    private Result<String> login() throws Exception {
+    private Result<String> loginForManager() throws Exception {
 
         UserInfo userInfo = new UserInfo();
         userInfo.setUserName("Manager");
@@ -84,7 +84,7 @@ public class LoginControllerTest {
     @Test
     public void loginSuccessTest() throws Exception {
 
-        Result<String> result = login();
+        Result<String> result = loginForManager();
         collector.checkThat(result, IsNull.notNullValue());
         collector.checkThat("Y", IsEqual.equalTo(result.getErrorFlag()));
 
@@ -128,7 +128,7 @@ public class LoginControllerTest {
 
         String resp = mockMvc
             .perform(MockMvcRequestBuilders.get(LOGIN_GET_CURRENT_USER_INFO).accept(MediaType.APPLICATION_JSON_VALUE)
-                .header("token", login().getData()))
+                .header("token", loginForManager().getData()))
             .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn().getResponse()
             .getContentAsString(StandardCharsets.UTF_8);
 
@@ -137,6 +137,8 @@ public class LoginControllerTest {
         collector.checkThat(result, IsNull.notNullValue());
         collector.checkThat("Y", IsEqual.equalTo(result.getErrorFlag()));
         collector.checkThat(result.getData(), IsNull.notNullValue());
+        collector.checkThat(result.getData().getUserName(), IsNot.not(IsEmptyString.emptyOrNullString()));
+        collector.checkThat(result.getData().getUserId(), IsNull.notNullValue());
 
     }
 
