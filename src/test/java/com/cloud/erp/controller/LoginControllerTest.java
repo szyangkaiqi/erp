@@ -36,6 +36,9 @@ import com.cloud.erp.pojo.vo.UserInfo;
 @ActiveProfiles("dev")
 public class LoginControllerTest {
 
+    // 获取当前登录用户
+    public static final String LOGIN_GET_CURRENT_USER_INFO = "/login/getCurrentUserInfo";
+
     @Rule
     public ErrorCollector collector = new ErrorCollector();
     @Autowired
@@ -71,23 +74,29 @@ public class LoginControllerTest {
 
     }
 
-    @Test
-    public void loginSuccessTest() throws Exception {
+    private Result<String> login() throws Exception {
+
         UserInfo userInfo = new UserInfo();
         userInfo.setUserName("Manager");
-        Result<String> result = loginController.login(userInfo);
-        collector.checkThat(userInfo.toString(), result, IsNull.notNullValue());
-        collector.checkThat(userInfo.toString(), "Y", IsEqual.equalTo(result.getErrorFlag()));
+        return loginController.login(userInfo);
+    }
 
-        collector.checkThat(userInfo.toString(), result.getData(), IsNot.not(IsEmptyString.emptyOrNullString()));
+    @Test
+    public void loginSuccessTest() throws Exception {
+
+        Result<String> result = login();
+        collector.checkThat(result, IsNull.notNullValue());
+        collector.checkThat("Y", IsEqual.equalTo(result.getErrorFlag()));
+
+        collector.checkThat(result.getData(), IsNot.not(IsEmptyString.emptyOrNullString()));
 
     }
 
     @Test
     public void getCurrentUserInfoForTokenIsNullTest() throws Exception {
-        String url = "/login/getCurrentUserInfo";
 
-        String resp = mockMvc.perform(MockMvcRequestBuilders.get(url).accept(MediaType.APPLICATION_JSON_VALUE))
+        String resp = mockMvc
+            .perform(MockMvcRequestBuilders.get(LOGIN_GET_CURRENT_USER_INFO).accept(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn().getResponse()
             .getContentAsString(StandardCharsets.UTF_8);
 
@@ -95,6 +104,39 @@ public class LoginControllerTest {
 
         collector.checkThat(result, IsNull.notNullValue());
         collector.checkThat("N", IsEqual.equalTo(result.getErrorFlag()));
+
+    }
+
+    @Test
+    public void getCurrentUserInfoForTokenIsErrorTest() throws Exception {
+
+        String resp = mockMvc
+            .perform(MockMvcRequestBuilders.get(LOGIN_GET_CURRENT_USER_INFO).accept(MediaType.APPLICATION_JSON_VALUE)
+                .header("token", "12345#123"))
+            .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn().getResponse()
+            .getContentAsString(StandardCharsets.UTF_8);
+
+        Result<UserInfo> result = JSON.parseObject(resp, new TypeReference<>() {});
+
+        collector.checkThat(result, IsNull.notNullValue());
+        collector.checkThat("N", IsEqual.equalTo(result.getErrorFlag()));
+
+    }
+
+    @Test
+    public void getCurrentUserInfoForTokenTest() throws Exception {
+
+        String resp = mockMvc
+            .perform(MockMvcRequestBuilders.get(LOGIN_GET_CURRENT_USER_INFO).accept(MediaType.APPLICATION_JSON_VALUE)
+                .header("token", login().getData()))
+            .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn().getResponse()
+            .getContentAsString(StandardCharsets.UTF_8);
+
+        Result<UserInfo> result = JSON.parseObject(resp, new TypeReference<>() {});
+
+        collector.checkThat(result, IsNull.notNullValue());
+        collector.checkThat("Y", IsEqual.equalTo(result.getErrorFlag()));
+        collector.checkThat(result.getData(), IsNull.notNullValue());
 
     }
 
