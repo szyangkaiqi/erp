@@ -1,13 +1,13 @@
 package com.cloud.erp.utils;
 
 import java.security.Key;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
+import cn.hutool.crypto.SecureUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -57,7 +57,7 @@ public class JWTTokenUtil {
      *            jwt token
      * @return 用户id
      */
-    public static Integer getUseridByJWTToken(String jsonToken) {
+    public static Integer getUserIdByJWTToken(String jsonToken) {
         Claims claims = parseJWT(jsonToken);
         if (claims == null) {
             return null;
@@ -66,6 +66,27 @@ public class JWTTokenUtil {
         Object obj = claims.get(USER_TOKEN_KEY);
         if (obj != null) {
             userid = Integer.valueOf(obj.toString());
+        }
+
+        return userid;
+    }
+
+    /**
+     * 从 token获取用户姓名
+     *
+     * @param jsonToken
+     *            jwt token
+     * @return 用户id
+     */
+    public static String getUserNameByJWTToken(String jsonToken) {
+        Claims claims = parseJWT(jsonToken);
+        if (claims == null) {
+            return null;
+        }
+        String userid = null;
+        Object obj = claims.get(USER_TOKEN_Name);
+        if (obj != null) {
+            userid = obj.toString();
         }
 
         return userid;
@@ -84,51 +105,26 @@ public class JWTTokenUtil {
         return value;
     }
 
-    /**
-     * 生成jwt token
-     * 
-     * @param userId
-     *            用户id或帐号
-     * @return
-     */
-    public static String createJWTToken(String userId) {
-        return createJWTToken(userId, TIME_LIMIT);
-    }
-
-    /**
-     * 生成jwt token
-     * 
-     * @param userId
-     *            用户id或帐号
-     * @param timeLimitMillis
-     *            有效时间秒
-     * @return
-     */
-    public static String createJWTToken(String userId, long timeLimitMillis) {
-        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-
-        long nowMillis = System.currentTimeMillis();
-        Date now = new Date(nowMillis);
-
-        // 生成签名密钥
-        byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(SECURITY_KEY);
-        Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
-
-        // 添加构成JWT的参数
-        JwtBuilder builder = Jwts.builder().claim(USER_TOKEN_KEY, userId)// 设置用户id
-            .signWith(signatureAlgorithm, signingKey);
-
-        // 生成JWT
-        return builder.compact();
-    }
-
     public static String generateToken(Integer userId, String userName) {
         Map<String, Object> map = new HashMap<>(2);
         map.put(USER_TOKEN_KEY, userId);
         map.put(USER_TOKEN_Name, userName);
         map.put(USER_TOKEN_KEY_CURRENT_TIME, System.currentTimeMillis());
         map.put(USER_TOKEN_KEY_HOSTNAME, System.getProperty("HOSTNAME"));
-        return createMultiKeysToken(map, TIME_LIMIT);
+        String token = createMultiKeysToken(map, TIME_LIMIT);
+        token = token + "#" + getMd5Token(token);
+        return token;
+    }
+
+    /**
+     * @Description: 获取加密后的token
+     * @Param: [token]
+     * @return: java.lang.String
+     * @Author: YANGKAIQI1
+     * @Date: 2020-08-10
+     */
+    public static String getMd5Token(String token) {
+        return SecureUtil.md5(SecureUtil.sha1(SecureUtil.md5(token)));
     }
 
     private static String createMultiKeysToken(Map<String, Object> map, long timeLimit) {

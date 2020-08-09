@@ -1,0 +1,39 @@
+logging:
+  config: classpath:log/logback-spring.xml
+server:
+  port: 8081
+spring:
+  datasource:
+    druid:
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+      filters: stat,wall,slf4j
+      initialSize: 10
+      maxActive: 50
+      maxPoolPreparedStatementPerConnectionSize: 20
+      maxWait: 60000
+      minEvictableIdleTimeMillis: 30000
+      minIdle: 3
+      password: 123
+      poolPreparedStatements: true
+      testOnBorrow: false
+      testOnReturn: false
+      testWhileIdle: true
+      timeBetweenEvictionRunsMillis: 60000
+      url: jdbc:sqlserver://localhost:1433;DatabaseName=erp;integratedSecurity=false
+      useGlobalDataSourceStat: true
+      username: sa
+      validationQuery: select 1
+    type: com.alibaba.druid.pool.DruidDataSource
+  jpa:
+    database: sql_server
+    hibernate:
+      ddl-auto: validate
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.SQLServer2008Dialect
+    show-sql: true
+  profiles:
+    active: dev

@@ -9,6 +9,7 @@ import com.cloud.erp.constant.BaseConstant;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.Tolerate;
 
 @Data
 @Builder(toBuilder = true)
@@ -28,6 +29,11 @@ public class Result<T> implements Serializable {
 
     @ApiModelProperty(value = "返回值")
     private T data;
+
+    @Tolerate
+    public Result() {
+
+    }
 
     public static <T> Result<T> makeFail(String msg) {
         return Result.<T>builder().errorFlag(BaseConstant.ERROR_FLAG.N.toString()).errorMag(msg).build();
